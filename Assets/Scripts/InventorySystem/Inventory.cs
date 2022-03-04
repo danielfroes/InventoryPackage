@@ -1,21 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-namespace Personal.InventorySystem
+
+namespace Personal.InventoryPackage
 {
-    public class Inventory : MonoBehaviour
+    [Serializable]
+    public class Inventory
     {
-        readonly List<IInventoryItem> _itensList = new List<IInventoryItem>();
-        public event Action<IInventoryItem> OnItemAdded;
-        public event Action<IInventoryItem> OnItemRemoved;
-
-
-        [SerializeField] bool _hasFiniteCapacity = false;
-        [SerializeField] int _maxCapacity= -1;
+        public string NameId { get; }
+        public event Action<AInventoryItem> OnItemAdded; 
+        public event Action<AInventoryItem> OnItemRemoved;
+     
         
+        List<AInventoryItem> _itensList = new List<AInventoryItem>();
         
-        public bool Add(IInventoryItem item)
+        //TODO: como serializar essas variaveis
+        bool _hasFiniteCapacity = false;
+        int _maxCapacity= -1;
+        
+        internal Inventory(string nameId)
+        {
+            NameId = nameId;
+        }
+
+        public bool Add(AInventoryItem item)
         {
             if (_hasFiniteCapacity && _itensList.Count >= _maxCapacity)
                 return false;
@@ -25,17 +33,17 @@ namespace Personal.InventorySystem
             return true;
         }
         
-        public void Remove(IInventoryItem item)
+        public void Remove(AInventoryItem item)
         {
             _itensList.Remove(item);
             OnItemRemoved?.Invoke(item);
         }
         
-        public IEnumerable<T> GetItens<T>()  where T : class, IInventoryItem
+        public IEnumerable<T> GetItens<T>()  where T : AInventoryItem
         {
             return _itensList.FindAll( item => item is T).ConvertAll(item => item as T);
         }
-        
     }
+    
 }
 
