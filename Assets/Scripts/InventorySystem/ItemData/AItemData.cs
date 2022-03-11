@@ -9,33 +9,21 @@ namespace Personal.InventoryPackage
         Selectable,
         NonUsable
     }
-    public class AInventoryItem : ScriptableObject
+    public class AItemData : ScriptableObject
     {
-        [SerializeField] int _id;
-        [SerializeField] string _itemName;
+        public const int INFITINY_STACKS = -1;
+        
+        [SerializeField] string _id;
         [SerializeField] bool _isStackable = false;
-        [SerializeField] int _maxStacks = -1;
+        [SerializeField] int _maxStacks = INFITINY_STACKS;
         [SerializeField] UseCategory _useCategory;
 
-        public string ItemName => _itemName;
-        public int Id => _id;
+        public string Id => _id;
         public bool IsStackable => _isStackable;
         public int MaxStacks => _maxStacks;
         public UseCategory UseCategory => _useCategory;
-
-        
         
         public virtual void Use(){}
-
         
-        public ItemSerializedData Serialize()
-        {
-            return new ItemSerializedData();
-        }
-
-        public void Deserialize(ItemSerializedData itemSerializedData)
-        {
-            
-        }
     }
 }

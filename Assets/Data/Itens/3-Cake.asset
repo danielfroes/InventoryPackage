@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e24009bc2f1a499aa0a18002054a05bb, type: 3}
-  m_Name: 1-Apple
+  m_Name: 3-Cake
   m_EditorClassIdentifier: 
-  _id: 1
-  _itemName: Apple
+  _id: food-cake
   _isStackable: 0
   _maxStacks: -1
   _useCategory: 0
-  _thumb: {fileID: 21300000, guid: 337e6b46063284023900abfa20f56068, type: 3}
-  _pickableItemPrefab: {fileID: -2297587303243834107, guid: 4237164c5a29846ebb46cc888b8e12b4,
+  _thumb: {fileID: 21300000, guid: 40bd309a5d71f4e589cc5d14c2a43f9e, type: 3}
+  _pickableItemPrefab: {fileID: 3575908166557960921, guid: 7c7de3b8b4e8e45c7852eaebf46552d9,
     type: 3}

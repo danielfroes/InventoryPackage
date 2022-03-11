@@ -9,9 +9,6 @@ namespace DefaultNamespace
 {
     public class InventoryMenuController : MonoBehaviour
     {
-        //Isso eh uma gambiarra ne ?
-        const string PLAYER_INVENTORY_ID = "Player";
-
         
         [SerializeField] FoodItemCellDisplay _foodItemCellPrefab;
         [SerializeField] RectTransform _itemCellsViewport;
@@ -25,22 +22,21 @@ namespace DefaultNamespace
             _saveInventoryButton.onClick.AddListener(() => InventoryServiceWrapper.InventoryService.SaveInventories());
         }
         
-        
-        GameObject CreateFoodItemCell(FoodItem item)
+        GameObject CreateFoodItemCell(InventoryItem<FoodItemData> inventoryFoodItem)
         {
             var itemCell = Instantiate(_foodItemCellPrefab, _itemCellsViewport);
-            itemCell.PopulateCell(item);
-            itemCell.SetRemoveButtonCallback(() => RemoveItemCallback(item, itemCell));
+            itemCell.PopulateCell(inventoryFoodItem);
+            //itemCell.SetRemoveButtonCallback(() => RemoveItemCallback(inventoryFoodItem, itemCell));
             return itemCell.gameObject;
         }
 
-        void RemoveItemCallback(AInventoryItem itemData, [NotNull] FoodItemCellDisplay foodItemCell)
+        void RemoveItemCallback(AItemData itemDataData, [NotNull] FoodItemCellDisplay foodItemCell)
         {
             if (foodItemCell == null) throw new ArgumentNullException(nameof(foodItemCell));
             Destroy(foodItemCell.gameObject);
             
-            Inventory inventory = InventoryServiceWrapper.InventoryService.GetInventory(PLAYER_INVENTORY_ID);
-            inventory.Remove(itemData);
+            Inventory inventory = InventoryServiceWrapper.InventoryService.GetInventory(InventoryIds.PLAYER_ID);
+            //inventory.Remove(inventoryItemData);
         }
 
 
@@ -52,14 +48,14 @@ namespace DefaultNamespace
 
         void PopulateInventoryUI()
         {
-            Inventory inventory = InventoryServiceWrapper.InventoryService.GetInventory(PLAYER_INVENTORY_ID);
+            Inventory inventory = InventoryServiceWrapper.InventoryService.GetInventory(InventoryIds.PLAYER_ID);
             
-            foreach (FoodItem item in inventory.GetItens<FoodItem>())
+            foreach (InventoryItem<FoodItemData> item in inventory.GetItens<FoodItemData>())
             {
                 _instantiatedCells.Add(CreateFoodItemCell(item));
             }
         }
-
+        
         public void Deactivate()
         {
             DeleteInstantiatedCells();

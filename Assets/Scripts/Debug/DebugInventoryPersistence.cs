@@ -23,10 +23,10 @@ namespace DefaultNamespace
     [Serializable]
     public struct SerializableArray
     {
-        public AInventoryItem[] Array;
+        public AItemData[] Array;
         public string teste ;
 
-        public SerializableArray(AInventoryItem[] array)
+        public SerializableArray(AItemData[] array)
         {
             Array = array;
             teste = "isso era pra funcionar";

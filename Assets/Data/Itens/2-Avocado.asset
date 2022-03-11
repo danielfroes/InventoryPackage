@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e24009bc2f1a499aa0a18002054a05bb, type: 3}
   m_Name: 2-Avocado
   m_EditorClassIdentifier: 
-  _id: 2
-  _itemName: Avocado
+  _id: food-avocado
   _isStackable: 0
   _maxStacks: -1
   _useCategory: 0

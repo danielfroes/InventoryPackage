@@ -5,13 +5,14 @@ namespace Personal.InventoryPackage
     public class InventoryService
     {
         readonly InventoryLibrary _inventoryLibrary;
-
         readonly IInventoryPersistence _inventoryPersistence;
+
+        readonly ItemDatabase _itemDatabase;
         
-        public InventoryService(IInventoryPersistence inventoryPersistence)
+        public InventoryService(ItemDatabase itemDatabase ,IInventoryPersistence inventoryPersistence)
         {
             _inventoryPersistence = inventoryPersistence;
-
+            _itemDatabase = itemDatabase;
             _inventoryLibrary = LoadInventoryLibrary();
         }
         
@@ -38,7 +39,7 @@ namespace Personal.InventoryPackage
         //TODO: Remover isso aqui para a janela de criacao e gerenciamento
         Inventory CreateBlankInventory(string nameId)
         {
-            Inventory blankInventory = new Inventory(nameId);
+            Inventory blankInventory = new Inventory(nameId, _itemDatabase);
             _inventoryLibrary.Add(nameId, blankInventory);
             return blankInventory;
         }

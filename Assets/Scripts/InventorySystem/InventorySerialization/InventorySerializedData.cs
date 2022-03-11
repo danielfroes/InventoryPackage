@@ -14,9 +14,9 @@ namespace Personal.InventoryPackage
             SerializedItens = new List<ItemSerializedData>();
             NameId = inventory.NameId;
                 
-            foreach (var item in inventory.GetItens<AInventoryItem>())
+            foreach (var item in inventory.GetItens<AItemData>())
             {
-                SerializedItens.Add(item.Serialize());
+               // SerializedItens.Add(item.Serialize());
             }
         }
     }
