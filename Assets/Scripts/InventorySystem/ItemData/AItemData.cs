@@ -5,8 +5,8 @@ namespace Personal.InventoryPackage
     public enum UseCategory
     {
         Consumable,
-        NonConsumable,
-        Selectable,
+        NonConsumable, 
+        //Selectable,
         NonUsable
     }
     public class AItemData : ScriptableObject
@@ -21,9 +21,14 @@ namespace Personal.InventoryPackage
         public string Id => _id;
         public bool IsStackable => _isStackable;
         public int MaxStacks => _maxStacks;
+
         public UseCategory UseCategory => _useCategory;
         
-        public virtual void Use(){}
+        internal void UseItem(params object[] args)
+        {
+            OnUse(args);
+        }
+        protected virtual void OnUse(params object[] args){}
         
     }
 }

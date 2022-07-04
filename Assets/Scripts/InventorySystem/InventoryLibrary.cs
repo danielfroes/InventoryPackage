@@ -1,15 +1,24 @@
+using System;
 using System.Collections.Generic;
 
 namespace Personal.InventoryPackage
 {
+    
     internal class InventoryLibrary : Dictionary<string, Inventory>
     {
-        public InventoryLibrary(IEnumerable<Inventory> inventories)
+        public InventoryLibrary(SerializedInventoryLibrary serializedLibrary, ItemDatabase itemDatabase)
         {
-            foreach (var inventory in inventories)
+            if (serializedLibrary == null) return;
+            
+            List<Inventory> inventories = serializedLibrary.SerializedInventories;
+            inventories.ForEach(inventory => inventory.SetItemDatabase(itemDatabase));
+            
+            foreach (Inventory inventory in inventories)
             {
                 Add(inventory.NameId, inventory);
             }
+
         }
+        
     }
 }

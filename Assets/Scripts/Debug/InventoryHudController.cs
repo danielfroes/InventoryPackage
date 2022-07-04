@@ -12,9 +12,12 @@ public class InventoryHudController : MonoBehaviour
     void Start()
     {
         _playerInventory = InventoryServiceWrapper.InventoryService.GetInventory(InventoryIds.PLAYER_ID);
-
+        RefreshInventoryCountHud();
+        
         _playerInventory.OnItemAdded += _ => RefreshInventoryCountHud();
         _playerInventory.OnItemRemoved += _ => RefreshInventoryCountHud();
+        
+        
     }
 
     void RefreshInventoryCountHud()

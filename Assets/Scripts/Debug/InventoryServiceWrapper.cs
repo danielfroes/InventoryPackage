@@ -11,9 +11,9 @@ namespace DefaultNamespace
 
         void Awake()
         {
-            InventoryService = new InventoryService( _itemDatabase, new DebugInventoryPersistence() );
+            InventoryService = new InventoryService( _itemDatabase, new JsonInventoryPersistence());
         }
-        
-        
+
+
     }
 }

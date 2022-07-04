@@ -1,5 +1,4 @@
-﻿using System;
-using DefaultNamespace;
+﻿using DefaultNamespace;
 using Personal.InventoryPackage;
 using TMPro;
 using UnityEngine;
@@ -12,17 +11,44 @@ public class FoodItemCellDisplay : MonoBehaviour
     [SerializeField] TextMeshProUGUI _name;
     [SerializeField] Button _useButton;
     [SerializeField] Button _removeButton;
-    public void PopulateCell(InventoryItem<FoodItemData> inventoryFoodItem)
+
+    Inventory _inventory;
+    InventoryItem<FoodItemData> _inventoryFoodItem;
+    
+    public void Initialize(InventoryItem<FoodItemData> inventoryFoodItem, Inventory inventory)
     {
-        _stacks.SetText(inventoryFoodItem.Stacks.ToString());
-        _thumb.sprite = inventoryFoodItem.ItemData.Thumb;
-        _name.SetText(inventoryFoodItem.ItemData.DisplayName);
-        _useButton.onClick.AddListener(inventoryFoodItem.ItemData.Use);
-        
+        _inventoryFoodItem = inventoryFoodItem;
+        _inventory = inventory;
+        _useButton.onClick.AddListener(UseItemButtonCallback);
+        _removeButton.onClick.AddListener(RemoveItemCallback);
+        RefreshUI();
+
+    }
+    
+    void UseItemButtonCallback()
+    {
+        _inventoryFoodItem.Use();
+        RefreshUI();
+    }
+    
+    void RemoveItemCallback()
+    {
+        _inventory.Remove(_inventoryFoodItem);
+        RefreshUI();
     }
 
-    public void SetRemoveButtonCallback(Action callback)
+    void RefreshUI()
     {
-        _removeButton.onClick.AddListener(callback.Invoke);
+
+        if (_inventoryFoodItem.Stacks <= 0)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        _stacks.SetText(_inventoryFoodItem.Stacks.ToString());
+        _thumb.sprite = _inventoryFoodItem.ItemData.Thumb;
+        _name.SetText(_inventoryFoodItem.ItemData.DisplayName);
+        
     }
 }

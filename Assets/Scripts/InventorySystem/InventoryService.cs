@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using DefaultNamespace;
 
 namespace Personal.InventoryPackage
 {
@@ -9,9 +9,10 @@ namespace Personal.InventoryPackage
 
         readonly ItemDatabase _itemDatabase;
         
-        public InventoryService(ItemDatabase itemDatabase ,IInventoryPersistence inventoryPersistence)
+        public InventoryService(ItemDatabase itemDatabase, IInventoryPersistence inventoryPersistence = null)
         {
-            _inventoryPersistence = inventoryPersistence;
+            _inventoryPersistence = inventoryPersistence ?? new DefaultInventoryPersistence();
+
             _itemDatabase = itemDatabase;
             _inventoryLibrary = LoadInventoryLibrary();
         }
@@ -23,32 +24,29 @@ namespace Personal.InventoryPackage
                return _inventoryLibrary[nameId]; 
             }
             
-            
             return CreateBlankInventory(nameId);
         }
         
-        //talvez transformar em async
         InventoryLibrary LoadInventoryLibrary()
         {
-            InventoryLibrarySerializedData serializedInventories = _inventoryPersistence.LoadInventories();
-            IEnumerable<Inventory> inventories = serializedInventories.GetInventory();
-
-            return new InventoryLibrary(inventories);
+            SerializedInventoryLibrary serializedInventoryLibrary = _inventoryPersistence.LoadInventories();
+            return new InventoryLibrary(serializedInventoryLibrary, _itemDatabase);
         }
 
         //TODO: Remover isso aqui para a janela de criacao e gerenciamento
         Inventory CreateBlankInventory(string nameId)
         {
-            Inventory blankInventory = new Inventory(nameId, _itemDatabase);
+            Inventory blankInventory = new Inventory(nameId);
+            blankInventory.SetItemDatabase(_itemDatabase);
             _inventoryLibrary.Add(nameId, blankInventory);
             return blankInventory;
         }
         
         public void SaveInventories()
-        {
-            InventoryLibrarySerializedData inventoryLibrarySerializedData = 
-                new InventoryLibrarySerializedData(_inventoryLibrary.Values);
-            _inventoryPersistence.SaveInventories(inventoryLibrarySerializedData);
+        { 
+            SerializedInventoryLibrary serializedInventoryLibrary = 
+                new SerializedInventoryLibrary(_inventoryLibrary);
+            _inventoryPersistence.SaveInventories(serializedInventoryLibrary);
         }
         
     }

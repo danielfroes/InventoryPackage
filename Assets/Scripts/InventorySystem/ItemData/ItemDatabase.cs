@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,13 +8,37 @@ namespace Personal.InventoryPackage
     public class ItemDatabase : ScriptableObject
     {
         [SerializeField] List<AItemData> _itens;
-        
-        
-        //TODO: talvez cirar um dicionario ou usar um dicionario serializado se pa ou talvez usar o System.Guid para criar o id
 
+        Dictionary<string, AItemData> _itemDatabase;
+            
+        void OnEnable()
+        {
+            _itemDatabase = CreateItemDatabase();
+        }
+
+        Dictionary<string, AItemData> CreateItemDatabase()
+        {
+            Dictionary<string, AItemData> database = new Dictionary<string, AItemData>();
+            foreach (AItemData item in _itens)
+            {
+                if (!database.ContainsKey(item.Id))
+                {
+                    database.Add(item.Id, item);
+                }
+            }
+
+            return database;
+        }
+        
         public AItemData GetItemData(string nameId)
         {
-            return _itens.Find(data => data.Id == nameId);
+            if(_itemDatabase.TryGetValue(nameId, out AItemData foundItem))
+            {
+                return foundItem;
+            }
+            
+            Debug.LogError("[Inventory System] Item not found in item database");
+            return null;
         }
         
     }

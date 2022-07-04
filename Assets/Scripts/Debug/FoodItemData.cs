@@ -14,7 +14,7 @@ namespace DefaultNamespace
         public Sprite Thumb => _thumb;
         public PickableItem PickableItemPrefab => _pickableItemPrefab;
         
-        public override void Use()
+        protected override void OnUse(params object[] args)
         {
             Debug.Log($"Comendo a : {Id}");
         }
